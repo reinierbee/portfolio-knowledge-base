@@ -1,0 +1,32 @@
+version: "3"
+services:
+    api:
+        image: app-api
+        build: ./api
+        restart: always
+        ports:
+            - "9000:9000"
+        expose:
+            - "9000"
+        volumes:
+            - ./api:/api
+            - /api/node_modules
+        depends_on:
+            - mongodb
+        networks:
+            - fullstacknetwork
+    mongodb:
+        image: mongo
+        restart: always
+        container_name: mongodb
+        # volumes:
+        #     - ./data-node:/data/db
+        ports:
+            - "27017:27017"
+        command: mongod --noauth --smallfiles
+        networks:
+            - fullstacknetwork
+
+networks:
+    fullstacknetwork:
+        driver: bridge
